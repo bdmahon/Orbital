@@ -23,11 +23,14 @@ class MassBody:
                 rDiv = dt / distance ** 3
                 self.vx -= x_diff * G * body.mass * rDiv
                 self.vy -= y_diff * G * body.mass * rDiv
+                # check for collisions?
         xchange = self.vx * dt
         ychange = self.vy * dt
         # print(xchange, ychange)
         self.x += xchange
         self.y += ychange
+
+        return None
 
     def gravitational_force(self, other_mass):
         force = G * ((self.mass * other_mass.mass)/(self.distance_formula(other_mass)**2))

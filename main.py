@@ -21,16 +21,17 @@ key_was_pressed = False
 
 bodies = []
 big_one = MassBody(10000000000000, WIDTH/2, HEIGHT/2, 0, 0)
-small_one = MassBody(200, WIDTH/2 - 300, HEIGHT/2, 0, 1.5)
-smaller_one = MassBody(1, WIDTH/2 - 303, HEIGHT/2, 0, 1.5)
+small_one = MassBody(50000, WIDTH/2 - 300, HEIGHT/2, 0, 1.5)
+smaller_one = MassBody(100, WIDTH/2 - 302, HEIGHT/2, 0.1, 1.5)
 bodies.extend([big_one, small_one, smaller_one])
-n_random_bodies = 1000
+n_random_bodies = 200
 for n in range(0, n_random_bodies):
-    bodies.append(MassBody(uniform(0.1, 10000), uniform(0, WIDTH), uniform(0, HEIGHT), uniform(-5, 5), uniform(-5, 5)))
+    bodies.append(MassBody(uniform(0.1, 10000), uniform(0, WIDTH), uniform(0, HEIGHT), uniform(-4, 4), uniform(-4, 4)))
 
 # Pygame clock for rendering
 clock = pygame.time.Clock()
 running = True
+deletables = []
 while running:
     time = clock.get_time()
     rtime = clock.get_rawtime()
@@ -80,7 +81,10 @@ while running:
     # logic updates
     # calculates positions for this frame
     for body in bodies:
-        body.update(bodies)
+        # update & check for collisions
+        # commit new velocities
+        if body.update(bodies) is not None:
+            deletables.append(body)
     screen.fill((0, 0, 0))
     for body in bodies:
         if body.onscreen_check(WIDTH, HEIGHT):
