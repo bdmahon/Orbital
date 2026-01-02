@@ -29,9 +29,8 @@ class MassBody:
         # print(xchange, ychange)
         self.x += xchange
         self.y += ychange
-
         return None
-
+    # TODO: What is this function?
     def gravitational_force(self, other_mass):
         force = G * ((self.mass * other_mass.mass)/(self.distance_formula(other_mass)**2))
 

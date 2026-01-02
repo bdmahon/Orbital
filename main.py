@@ -24,7 +24,7 @@ big_one = MassBody(10000000000000, WIDTH/2, HEIGHT/2, 0, 0)
 small_one = MassBody(50000, WIDTH/2 - 300, HEIGHT/2, 0, 1.5)
 smaller_one = MassBody(100, WIDTH/2 - 302, HEIGHT/2, 0.1, 1.5)
 bodies.extend([big_one, small_one, smaller_one])
-n_random_bodies = 200
+n_random_bodies = 2000
 for n in range(0, n_random_bodies):
     bodies.append(MassBody(uniform(0.1, 10000), uniform(0, WIDTH), uniform(0, HEIGHT), uniform(-4, 4), uniform(-4, 4)))
 
@@ -83,13 +83,18 @@ while running:
     for body in bodies:
         # update & check for collisions
         # commit new velocities
-        if body.update(bodies) is not None:
+        body.update(bodies)
+        if not body.onscreen_check(WIDTH, HEIGHT):
             deletables.append(body)
+    print("Bodies: ", len(bodies), "Deletables: ", len(deletables))
+    for body in deletables:
+        bodies.remove(body)
+    deletables = []
+    print("Bodies: ", len(bodies), "Deletables: ", len(deletables))
     screen.fill((0, 0, 0))
     for body in bodies:
         if body.onscreen_check(WIDTH, HEIGHT):
             body.draw(screen)
-
     pygame.display.flip()
     # 30 frames per second
     clock.tick(30)
